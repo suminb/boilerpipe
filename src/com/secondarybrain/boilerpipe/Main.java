@@ -1,9 +1,13 @@
 package com.secondarybrain.boilerpipe;
 import gnu.getopt.Getopt;
 
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -42,15 +46,17 @@ public class Main {
     	}
 	}
 	
-	private void execute() throws FileNotFoundException, BoilerpipeProcessingException, MalformedURLException {
+	private void execute() throws FileNotFoundException, BoilerpipeProcessingException, MalformedURLException, UnsupportedEncodingException {
 		String text = null;
 		if (Mode.File.equals(mode)) {
-			text = ArticleExtractor.INSTANCE.getText(new FileReader(new File(uri)));
+			//Reader reader = new InputStreamReader(new FileInputStream(uri), "UTF-8");
+			Reader reader = new FileReader(uri);
+			text = ArticleExtractor.INSTANCE.getText(reader);
 		}
-		else if (Mode.URL.equals(mode)) {;
+		else if (Mode.URL.equals(mode)) {
 			text = ArticleExtractor.INSTANCE.getText(new URL(uri));
 		}
-        System.out.println(text);
+		System.out.println(text);
 	}
 
     public static void main(String[] args) throws Exception {
